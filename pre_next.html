@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js' crossorigin='anonymous'></script>
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="app">
+    <div v-for="page of pageList">{{page}}</div>
+    <button v-show="nowPage>1" @click="Count(-1)">{{pre}}</button>
+    <button v-show="nowPage<totalPage" @click="Count(1)">{{next}}</button>
+  </div>
+  <script>
+    new Vue({
+      el: '#app',
+      data: {
+        pre: '上一頁',
+        next: '下一頁',
+        data: ['aaa', 'bbb', 'ccc', 'ddd', 'eee', 'fff', 'ggg', 'hhh'],
+        perPage: 4,
+        nowPage: 1,
+      },
+      computed: {
+        pageList: function () {
+          let start = (this.nowPage - 1) * 4;
+          return this.data.slice(start, start + this.perPage);
+        },
+        totalPage: function () {
+          return Math.ceil(this.data.length / 4)
+        }
+      },
+      methods: {
+        Count: function (direct) {
+          let page = this.nowPage + direct
+          if (page < 1) {
+            this.nowPage = 1
+          } else if (page > this.totalPage) {
+            this.nowPage = this.totalPage
+          } else {
+            this.nowPage = page
+          }
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>
